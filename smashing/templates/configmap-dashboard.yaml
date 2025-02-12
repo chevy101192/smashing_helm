@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-dashboards-configmap
+data:
+  home.erb: |-
+    <% content_for(:title) { "My super sweet dashboard" } %>
+    <div class="gridster">
+      <ul>
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+          <div data-id="karma" data-view="Number" data-title="Karma" style="background-color:#96bf48;"></div>
+        </li>
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+          <div data-id="groceries" data-view="List" data-unordered="true" data-title="Buzzwords" data-moreinfo="# of times said around the office"></div>
+        </li>
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+          <div data-id="valuation" data-view="Number" data-title="Current Valuation" data-prefix="$"></div>
+        </li>
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+          <div data-id="clock" data-view="Clock" data-title="Clock" style="background-color:#96bf48;"></div>
+        </li>
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+          <div data-id="ping_1" data-view="Ping" data-title="Proxmox" data-unordered="true"></div> 
+        </li>
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+          <div data-id="ping_2" data-view="Ping" data-title="pi-zero" data-unordered="true"></div>
+        </li> 
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+          <div data-id="ping_3" data-view="Ping" data-title="website" data-unordered="true"></div>
+        </li>
+      </ul>
+    </div>
+
+  layout.erb: |-
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8"/>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+      <title><%= yield_content(:title) %></title>
+
+      <!-- The javascript and css are managed by sprockets. The files can be found in the /assets folder-->
+      <script type="text/javascript" src="/assets/application.js"></script>
+      <link rel="stylesheet" href="/assets/application.css">
+
+      <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+      <link rel="icon" href="/favicon.ico">
+
+      </head>
+        <body>
+          <div id="container">
+            <%= yield %>
+          </div>
+  
+          <% if development? %>
+            <div id="saving-instructions">
+              <p>Paste the following at the top of <i><%= params[:dashboard] %>.erb</i></p>
+              <textarea id="gridster-code"></textarea>
+            </div>
+            <a href="#saving-instructions" id="save-gridster">Save this layout</a>
+          <% end %>
+        </body>
+      </html>

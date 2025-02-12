@@ -1,0 +1,10 @@
+ping:
+  1:
+    ip: 192.168.1.205
+    name: proxmox
+  2:
+    ip: 192.168.1.46
+    name: website
+  3:
+    ip: 192.168.1.47
+    name: host_master

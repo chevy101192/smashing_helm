@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-smashing
+  labels:
+    app: {{ .Release.Name }}-smashing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-smashing
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-smashing
+    spec:
+      containers:
+        - name: smashing
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          volumeMounts:
+            - name: dashboards-volume
+              mountPath: {{ .Values.dashboards.path }}
+            - name: jobs-volume
+              mountPath: {{ .Values.jobs.path }}
+
+      volumes:
+        - name: dashboards-volume
+          configMap:
+            name: {{ .Release.Name }}-dashboards-configmap
+        - name: jobs-volume
+          configMap:
+            name: {{ .Release.Name }}-jobs-configmap

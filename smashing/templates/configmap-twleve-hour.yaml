@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-files-configmap
+data:
+  {{- range $file := .Files.Glob "files/*" }}
+    {{ $file | base }}: |-
+      {{ .Files.Get $file | indent 4 }}
+  {{- end }}
